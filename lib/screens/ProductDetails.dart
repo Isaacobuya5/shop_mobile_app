@@ -11,7 +11,7 @@ class ProductDetail extends StatelessWidget {
     // id for this particular product
     final productId = ModalRoute.of(context).settings.arguments as String;
     // retrieve value for this particular product
-    final loadedProduct = Provider.of<ProductsProvider>(context).items.firstWhere((product) => product.id == productId);
+    final loadedProduct = Provider.of<ProductsProvider>(context).findById(productId);
     return Scaffold(
       appBar: AppBar(
         title: Text(loadedProduct.title),
