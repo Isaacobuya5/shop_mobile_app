@@ -11,7 +11,10 @@ class ProductDetail extends StatelessWidget {
     // id for this particular product
     final productId = ModalRoute.of(context).settings.arguments as String;
     // retrieve value for this particular product
-    final loadedProduct = Provider.of<ProductsProvider>(context).findById(productId);
+    // we don't want to rebuild this widget if a new product is added
+    // for this case and cases where we just need to read data once from provider
+    // we need to set listen to false
+    final loadedProduct = Provider.of<ProductsProvider>(context, listen: false).findById(productId);
     return Scaffold(
       appBar: AppBar(
         title: Text(loadedProduct.title),
