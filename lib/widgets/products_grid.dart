@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './product_item.dart';
-import '../model/product.dart';
 import '../providers/products.dart';
+import '../providers/product.dart';
 
 class ProductsGrid extends StatelessWidget {
-  const ProductsGrid({
-    Key key,
-    @required this.loadedProducts,
-  }) : super(key: key);
+  // const ProductsGrid({
+  //   Key key
+  // }) : super(key: key);
 
-  final List<Product> loadedProducts;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +24,15 @@ class ProductsGrid extends StatelessWidget {
         crossAxisSpacing: 10,
         mainAxisSpacing: 10
         ), 
-      itemBuilder: (context, index) =>ProductItem(
-        products[index].id, 
-        products[index].title, 
-        products[index].imageUrl)
-      );
+      itemBuilder: (context, index) =>ChangeNotifierProvider(
+        // Product class already instantiated with the builder above
+         create: (context) => products[index],
+          child: ProductItem(
+          // products[index].id, 
+          // products[index].title, 
+          // products[index].imageUrl)
+        ),
+      ),
+    );
   }
 }
