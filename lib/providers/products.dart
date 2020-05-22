@@ -39,10 +39,32 @@ class ProductsProvider with ChangeNotifier {
     ),
   ];
 
+  // var _showFavoritesOnly = false;
+
+  // void showFavoritesOnly() {
+  //   _showFavoritesOnly = true;
+  //   notifyListeners();
+  // }
+
+  // void showAll() {
+  //   _showFavoritesOnly = false;
+  //   notifyListeners();
+  // }
+
   // method to get list of products
   List<Product> get items {
+
+    // if (_showFavoritesOnly) {
+    //   return _items.where((product) => product.isFavourite == true).toList();
+    // } else {
     // we need to return a copy of items and not the actual reference
     return [..._items];
+    // }
+  }
+
+  // method to return a list of only favourite products
+  List<Product> get favoriteItems {
+    return _items.where((product) => product.isFavourite).toList();
   }
 
   // method to find a product by id
