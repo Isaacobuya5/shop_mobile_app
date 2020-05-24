@@ -17,6 +17,15 @@ int get itemCount {
   return _items.length;
 }
 
+//calculate total amount of cart items
+double get totalAmount {
+  var total = 0.0;
+  _items.forEach((key, cartItem) => {
+    total += cartItem.price * cartItem.quantity
+  });
+  return total;
+}
+
 // adding a new cart item
 void addItem(String productId, double price, String title) {
   // if a product already exists in cart, then change quantity
