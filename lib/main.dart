@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import './providers/products.dart';
 import './screens/products_overview.dart';
 import './screens/ProductDetails.dart';
+import './providers/cart.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,8 +13,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // registering ProductsProvider class as a Provider
-    return ChangeNotifierProvider(
-        create: (context) => ProductsProvider(),
+    return MultiProvider(
+      providers: [
+         ChangeNotifierProvider.value(
+          value: ProductsProvider(),
+         ),
+         ChangeNotifierProvider.value(
+          value: Cart(),
+         )
+      ],
         child: MaterialApp(
         title: 'MyShop',
         theme: ThemeData(
