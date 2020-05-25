@@ -47,4 +47,10 @@ void addItem(String productId, double price, String title) {
   }
   notifyListeners();
 }
+
+// removing an item
+void removeItem(String productId) {
+  _items.remove(productId);
+  notifyListeners();
+}
 }
