@@ -53,4 +53,10 @@ void removeItem(String productId) {
   _items.remove(productId);
   notifyListeners();
 }
+
+// clear cart
+void clearCart() {
+  _items = {};
+  notifyListeners();
+}
 }
