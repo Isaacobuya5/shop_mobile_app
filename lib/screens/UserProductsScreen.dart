@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/products.dart';
 import '../widgets/user_product_item.dart';
+import '../widgets/AppDrawer.dart';
 
 class UserProductsScreen extends StatelessWidget {
 
@@ -18,6 +19,7 @@ static const routeName = '/user-products';
             icon: Icon(Icons.add), 
             onPressed: (){})
         ],),
+        drawer: AppDrawer(),
         body: ListView.builder(
           itemCount: productData.items.length,
           itemBuilder: (_, index) => Column(
