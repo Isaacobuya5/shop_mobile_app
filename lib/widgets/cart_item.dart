@@ -41,7 +41,7 @@ class CartItem extends StatelessWidget {
                 }, 
                 child: Text("Yes"))
             ],
-          ))
+          ));
         },
         background: Container(
           color: Theme.of(context).errorColor,
