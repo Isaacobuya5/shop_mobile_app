@@ -20,7 +20,12 @@ static const routeName = '/user-products';
         ],),
         body: ListView.builder(
           itemCount: productData.items.length,
-          itemBuilder: (_, index) => UserProductItem(productData.items[index].title, productData.items[index].imageUrl)
+          itemBuilder: (_, index) => Column(
+            children: <Widget>[
+              UserProductItem(productData.items[index].title, productData.items[index].imageUrl),
+              Divider()
+            ],
+          )
           ),
     );
   }
