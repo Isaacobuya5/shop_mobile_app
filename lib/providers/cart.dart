@@ -59,4 +59,25 @@ void clearCart() {
   _items = {};
   notifyListeners();
 }
+
+// undo add item action
+void removeSingleItem(productId) {
+  // if no such item exists simply return
+  if (!_items.containsKey(productId)) {
+    return;
+  }
+  // if item already exists in the cart then decrease the quantity
+  if (_items[productId].quantity > 1) {
+    _items.update(productId, (existingProduct) => CartItem(
+      id: existingProduct.id,
+      name: existingProduct.name,
+      price: existingProduct.price,
+      quantity: existingProduct.quantity - 1));
+  } else {
+    // remove the product from the cart
+    _items.remove(productId);
+  }
+  // call notifyListeners to effect changes in all connected widgets
+  notifyListeners();
+}
 }
