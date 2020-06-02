@@ -51,6 +51,12 @@ void _updateImageUrl() {
 void _saveForm() {
   // the save method will collect all the values from each and every from text field
   // you can the save the values in a global map or any other place
+  // we can run validator for each input with the help of formKey
+  final isValid = _formKey.currentState.validate();
+  // returns true if valid
+  if (!isValid) {
+    return;
+  }
   _formKey.currentState.save();
 }
 
@@ -69,13 +75,25 @@ void _saveForm() {
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Form(
+          // we can force the form to run validator for each input here
+          // by setting autovalidate to true
           key: _formKey,
           child: ListView(children: <Widget>[
             TextFormField(
               decoration: InputDecoration(
-                labelText: 'Title'
+                labelText: 'Title',
+                // we can customize styles for error handling here such as fontStyle etc
               ),
               textInputAction: TextInputAction.next,
+              // we add validation to an input with the help of validator
+              validator: (value) {
+                // value -> is the value entered into this field
+                if (value.isEmpty) {
+                  return "Field cannot be empty";
+                }
+                // returning null means input is valid
+                return null;
+              },
               onFieldSubmitted: (_) {
                 FocusScope.of(context).requestFocus(_priceFocusNode);
               },
