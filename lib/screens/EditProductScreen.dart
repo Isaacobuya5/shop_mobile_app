@@ -44,6 +44,13 @@ super.dispose();
 
 void _updateImageUrl() {
   if (!_imageUrlFocusNode.hasFocus) {
+     if (
+     (!_imageUrlController.text.startsWith("http") && !_imageUrlController.text.startsWith("https")) ||
+      (!_imageUrlController.text.endsWith(".jpg") && !_imageUrlController.text.endsWith(".png") && 
+      !_imageUrlController.text.endsWith(".jpeg"))) {
+       return;
+     }
+
   setState(() {});
 }
 }
@@ -114,6 +121,19 @@ void _saveForm() {
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.number,
               focusNode: _priceFocusNode,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return "Please enter a price";
+                }
+                if (double.tryParse(value) == null){
+                  return "Please enter a valid";
+                }
+                if (double.parse(value) <= 0) {
+                  return "Please enter a value greater than zero";
+                }
+
+                return null;
+              },
               onFieldSubmitted: (_) {
                 FocusScope.of(context).requestFocus(_descriptionFocusNode);
               },
@@ -134,6 +154,16 @@ void _saveForm() {
               keyboardType: TextInputType.multiline,
               maxLines: 3,
               focusNode: _descriptionFocusNode,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return "Please enter a description";
+                }
+                if (value.length < 10) {
+                  return "Please enter a longer description";
+                }
+
+                return null;
+              },
               onSaved: (value){
                _editedProduct = Product(
                   id: null, 
@@ -174,6 +204,21 @@ void _saveForm() {
                       onFieldSubmitted: (_) {
                         _saveForm();
                       },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Please enter an image URL";
+                  }
+
+                  if (!value.startsWith("http") && !value.startsWith("https")) {
+                    return "Please enter a valid URL";
+                  }
+
+                  if (!value.endsWith(".jpg") && !value.endsWith(".png") && !value.endsWith(".jpeg")) {
+                    return "Please enter a valid image URL";
+                  }
+
+                  return null;
+                },
                 onSaved: (value){
                _editedProduct = Product(
                   id: null, 
