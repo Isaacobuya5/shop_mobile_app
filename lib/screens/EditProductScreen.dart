@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../providers/product.dart';
+import '../providers/products.dart';
 
 class EditProductScreen extends StatefulWidget {
 
@@ -65,6 +67,9 @@ void _saveForm() {
     return;
   }
   _formKey.currentState.save();
+  // dispatch the addProduct action to save a new product
+  Provider.of<ProductsProvider>(context, listen: false).addNewProduct(_editedProduct);
+  Navigator.of(context).pop();
 }
 
   @override
