@@ -90,4 +90,17 @@ class ProductsProvider with ChangeNotifier {
     // we need to notify other listeners of the update
     notifyListeners();
   }
+
+  // method to edit an existing product
+  void editProduct(String productId,Product newProduct) {
+    // get the index for the product
+    final productIndex = _items.indexWhere((product) => product.id == productId);
+    // just checking if an index was found
+    if (productIndex >= 0) {
+      // update the product at that index with the new product
+      _items[productIndex] = newProduct;
+      // notify listeners connected to this
+      notifyListeners();
+    }
+  }
 }
