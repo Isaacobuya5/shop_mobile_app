@@ -28,11 +28,43 @@ class _EditProductScreenState extends State<EditProductScreen> {
     description: '', 
     price: 0, 
     imageUrl: '');
+    // initialize product property values
+    var _initialValues = {
+      'title': '',
+      'description': '',
+      'price': '',
+      'imageUrl': ''
+    };
 
+  var _isInit = true;
 @override
 void initState() {
   _imageUrlFocusNode.addListener(_updateImageUrl);
   super.initState();
+}
+
+@override
+void didChangeDependencies() {
+  if (_isInit) {
+    final productId = ModalRoute.of(context).settings.arguments as String;
+    // check if id existing - we only want to edit an existing product
+    if (productId != null) {
+      // find the product with that id
+      final _editedProduct = Provider.of<ProductsProvider>(context, listen: false).findById(productId);
+      // initial values for the product property fields
+      _initialValues = {
+        'title': _editedProduct.title,
+        'description': _editedProduct.description,
+        'price': _editedProduct.price.toString(),
+        'imageUrl': ''
+        // 'imageUrl': _editedProduct.imageUrl
+      };
+      _imageUrlController.text = _editedProduct.imageUrl;
+    }
+    
+  }
+  _isInit = false;
+  super.didChangeDependencies();
 }
 @override
 void dispose() {
@@ -92,6 +124,7 @@ void _saveForm() {
           key: _formKey,
           child: ListView(children: <Widget>[
             TextFormField(
+              initialValue: _initialValues['title'],
               decoration: InputDecoration(
                 labelText: 'Title',
                 // we can customize styles for error handling here such as fontStyle etc
@@ -111,15 +144,17 @@ void _saveForm() {
               },
               onSaved: (value){
                 _editedProduct = Product(
-                  id: null, 
+                  id: _editedProduct.id, 
                   title: value, 
                   description: _editedProduct.description, 
                   price: _editedProduct.price, 
-                  imageUrl: _editedProduct.imageUrl
+                  imageUrl: _editedProduct.imageUrl,
+                  isFavourite: _editedProduct.isFavourite
                   );
               },
             ),
             TextFormField(
+              initialValue: _initialValues['price'],
               decoration: InputDecoration(
                 labelText: 'Price'
               ),
@@ -144,15 +179,17 @@ void _saveForm() {
               },
             onSaved: (value){
                _editedProduct = Product(
-                  id: null, 
+                  id: _editedProduct.id, 
                   title: _editedProduct.title, 
                   description: _editedProduct.description, 
                   price: double.parse(value), 
-                  imageUrl: _editedProduct.imageUrl
+                  imageUrl: _editedProduct.imageUrl,
+                  isFavourite: _editedProduct.isFavourite
                   );
                 }
             ),
             TextFormField(
+              initialValue: _initialValues['description'],
               decoration: InputDecoration(
                 labelText: 'Description'
               ),
@@ -171,11 +208,12 @@ void _saveForm() {
               },
               onSaved: (value){
                _editedProduct = Product(
-                  id: null, 
+                  id: _editedProduct.id, 
                   title: _editedProduct.title, 
                   description: value, 
                   price: _editedProduct.price, 
-                  imageUrl: _editedProduct.imageUrl
+                  imageUrl: _editedProduct.imageUrl,
+                  isFavourite: _editedProduct.isFavourite
                   );
               }
             ),
@@ -226,11 +264,12 @@ void _saveForm() {
                 },
                 onSaved: (value){
                _editedProduct = Product(
-                  id: null, 
+                  id: _editedProduct.id, 
                   title: _editedProduct.title, 
                   description: _editedProduct.description, 
                   price: _editedProduct.price, 
-                  imageUrl: value
+                  imageUrl: value,
+                  isFavourite: _editedProduct.isFavourite
                   );
                 }
                     ),
