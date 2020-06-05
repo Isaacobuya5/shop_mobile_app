@@ -101,6 +101,8 @@ class ProductsProvider with ChangeNotifier {
       _items[productIndex] = newProduct;
       // notify listeners connected to this
       notifyListeners();
+    } else {
+      print('update failed');
     }
   }
 }

@@ -49,8 +49,9 @@ void didChangeDependencies() {
     final productId = ModalRoute.of(context).settings.arguments as String;
     // check if id existing - we only want to edit an existing product
     if (productId != null) {
+      print(productId);
       // find the product with that id
-      final _editedProduct = Provider.of<ProductsProvider>(context, listen: false).findById(productId);
+      _editedProduct = Provider.of<ProductsProvider>(context, listen: false).findById(productId);
       // initial values for the product property fields
       _initialValues = {
         'title': _editedProduct.title,
@@ -99,11 +100,17 @@ void _saveForm() {
     return;
   }
   _formKey.currentState.save();
+
+  // if product exist then simply update
+  if (_editedProduct.id != null) {
+    // dispatch action to edit a product
+    Provider.of<ProductsProvider>(context, listen: false).editProduct(_editedProduct.id, _editedProduct);
+  } else {
   // dispatch the addProduct action to save a new product
   Provider.of<ProductsProvider>(context, listen: false).addNewProduct(_editedProduct);
-  Navigator.of(context).pop();
 }
-
+ Navigator.of(context).pop();
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
