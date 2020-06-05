@@ -105,4 +105,11 @@ class ProductsProvider with ChangeNotifier {
       print('update failed');
     }
   }
+
+  // method to delete a product
+  void deleteProduct(String id) {
+    // delete a product with the given id
+    _items.removeWhere((product) => product.id == id);
+    notifyListeners();
+  }
 }
