@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 import './product.dart';
 
@@ -74,7 +76,19 @@ class ProductsProvider with ChangeNotifier {
 
   // method to add a new product
   void addNewProduct(Product product) {
-
+    // url for the api endpoint
+    const url = 'https://shop-mobile-app-3f890.firebaseio.com/products.json';
+    // sending the http post request
+    // we need to convert the data we are sending in body to json
+    http.post(url, body: json.encode(
+      {
+        'title': product.title,
+        'description': product.description,
+        'imageUrl': product.imageUrl,
+        'price': product.price,
+        'isFavourite': product.isFavourite
+      }
+    ));
     final newProduct = Product(
       id: DateTime.now().toString(), 
       title: product.title, 
