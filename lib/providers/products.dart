@@ -75,12 +75,12 @@ class ProductsProvider with ChangeNotifier {
   }
 
   // method to add a new product
-  void addNewProduct(Product product) {
+  Future<void> addNewProduct(Product product) {
     // url for the api endpoint
     const url = 'https://shop-mobile-app-3f890.firebaseio.com/products.json';
     // sending the http post request
     // we need to convert the data we are sending in body to json
-    http.post(url, body: json.encode(
+    return http.post(url, body: json.encode(
       {
         'title': product.title,
         'description': product.description,
@@ -88,9 +88,9 @@ class ProductsProvider with ChangeNotifier {
         'price': product.price,
         'isFavourite': product.isFavourite
       }
-    ));
-    final newProduct = Product(
-      id: DateTime.now().toString(), 
+    )).then((response) {
+      final newProduct = Product(
+      id: json.decode(response.body)['name'], 
       title: product.title, 
       description: product.description, 
       price: product.price, 
@@ -103,6 +103,8 @@ class ProductsProvider with ChangeNotifier {
     // _items.add(value);
     // we need to notify other listeners of the update
     notifyListeners();
+    });
+
   }
 
   // method to edit an existing product

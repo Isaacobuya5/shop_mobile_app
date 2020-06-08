@@ -37,6 +37,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
     };
 
   var _isInit = true;
+  var _isLoading = false;
+
 @override
 void initState() {
   _imageUrlFocusNode.addListener(_updateImageUrl);
@@ -101,15 +103,29 @@ void _saveForm() {
   }
   _formKey.currentState.save();
 
+  // when the form is submitted we want to show a loading spinner
+  setState(() {
+    _isLoading = true;
+  });
+
   // if product exist then simply update
   if (_editedProduct.id != null) {
     // dispatch action to edit a product
     Provider.of<ProductsProvider>(context, listen: false).editProduct(_editedProduct.id, _editedProduct);
+    setState(() {
+      _isLoading = false;
+    });
+     Navigator.of(context).pop();
   } else {
   // dispatch the addProduct action to save a new product
-  Provider.of<ProductsProvider>(context, listen: false).addNewProduct(_editedProduct);
+  Provider.of<ProductsProvider>(context, listen: false).addNewProduct(_editedProduct).then((_) {
+    setState(() {
+      _isLoading = false;
+    });
+     Navigator.of(context).pop();
+  });
 }
- Navigator.of(context).pop();
+
 }
   @override
   Widget build(BuildContext context) {
@@ -123,7 +139,9 @@ void _saveForm() {
           ),
         ],
       ),
-      body: Padding(
+      body: _isLoading ? Center(
+        child: CircularProgressIndicator(),
+      ) : Padding(
         padding: const EdgeInsets.all(10.0),
         child: Form(
           // we can force the form to run validator for each input here
