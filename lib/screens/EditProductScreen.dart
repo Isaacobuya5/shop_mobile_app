@@ -92,7 +92,7 @@ void _updateImageUrl() {
 }
 }
 
-void _saveForm() {
+Future<void> _saveForm() async{
   // the save method will collect all the values from each and every from text field
   // you can the save the values in a global map or any other place
   // we can run validator for each input with the help of formKey
@@ -117,16 +117,31 @@ void _saveForm() {
     });
      Navigator.of(context).pop();
   } else {
+    try {
   // dispatch the addProduct action to save a new product
-  Provider.of<ProductsProvider>(context, listen: false).addNewProduct(_editedProduct).then((_) {
+  await Provider.of<ProductsProvider>(context, listen: false).addNewProduct(_editedProduct);
+    } catch(error) {
+   await showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        title: Text('An error occured'),
+        content: Text('Something went wrong'),
+        actions: <Widget> [
+          FlatButton(
+            child: Text('Okay'),
+            onPressed: () => Navigator.of(context).pop(),)
+        ]
+      );
+    });
+  } finally {
     setState(() {
       _isLoading = false;
     });
      Navigator.of(context).pop();
-  });
+  }
 }
 
 }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
