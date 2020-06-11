@@ -22,11 +22,18 @@ class _ProductsOverviewState extends State<ProductsOverview> {
 
   var _showFavorites = false;
   var _isInit = true;
+  var _isLoading = false;
 
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      Provider.of<ProductsProvider>(context, listen: false).fetchAndSetProducts();
+      Provider.of<ProductsProvider>(context, listen: false).fetchAndSetProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      }).catchError((error) {
+        print(error);
+      });
     }
 
     _isInit = false;
@@ -70,7 +77,9 @@ class _ProductsOverviewState extends State<ProductsOverview> {
         ],
       ),
       drawer: AppDrawer(),
-      body: ProductsGrid(_showFavorites),
+      body:_isLoading ? Center(
+        child: CircularProgressIndicator() 
+      ) : ProductsGrid(_showFavorites),
     );
   }
 }
