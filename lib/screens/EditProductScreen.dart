@@ -111,11 +111,11 @@ Future<void> _saveForm() async{
   // if product exist then simply update
   if (_editedProduct.id != null) {
     // dispatch action to edit a product
-    Provider.of<ProductsProvider>(context, listen: false).editProduct(_editedProduct.id, _editedProduct);
-    setState(() {
-      _isLoading = false;
-    });
-     Navigator.of(context).pop();
+    await Provider.of<ProductsProvider>(context, listen: false).editProduct(_editedProduct.id, _editedProduct);
+    // setState(() {
+    //   _isLoading = false;
+    // });
+    //  Navigator.of(context).pop();
   } else {
     try {
   // dispatch the addProduct action to save a new product
@@ -132,13 +132,17 @@ Future<void> _saveForm() async{
         ]
       );
     });
-  } finally {
+  } //finally {
+    // setState(() {
+    //   _isLoading = false;
+    // });
+    //  Navigator.of(context).pop();
+  //}
+}
     setState(() {
       _isLoading = false;
     });
      Navigator.of(context).pop();
-  }
-}
 
 }
 

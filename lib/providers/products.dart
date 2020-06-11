@@ -139,11 +139,20 @@ class ProductsProvider with ChangeNotifier {
   }
 
   // method to edit an existing product
-  void editProduct(String productId,Product newProduct) {
+  Future<void> editProduct(String productId,Product newProduct) async {
     // get the index for the product
     final productIndex = _items.indexWhere((product) => product.id == productId);
+    final url = 'https://shop-mobile-app-3f890.firebaseio.com/products/$productId.json';
+
     // just checking if an index was found
     if (productIndex >= 0) {
+
+      await http.patch(url, body: json.encode({
+        'title': newProduct.title,
+        'price': newProduct.price,
+        'description': newProduct.description,
+        'imageUrl': newProduct.imageUrl
+      }));
       // update the product at that index with the new product
       _items[productIndex] = newProduct;
       // notify listeners connected to this
