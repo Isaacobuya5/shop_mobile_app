@@ -22,7 +22,7 @@ class _ProductsOverviewState extends State<ProductsOverview> {
 
   var _showFavorites = false;
   var _isInit = true;
-  var _isLoading = false;
+  var _isLoading = true;
 
   @override
   void didChangeDependencies() {
@@ -31,8 +31,6 @@ class _ProductsOverviewState extends State<ProductsOverview> {
         setState(() {
           _isLoading = false;
         });
-      }).catchError((error) {
-        print(error);
       });
     }
 

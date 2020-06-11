@@ -134,7 +134,7 @@ class ProductsProvider with ChangeNotifier {
       _items = loadedProducts;
       notifyListeners();
     } catch(error) {
-      throw error;
+      print(error);
     }
   }
 
