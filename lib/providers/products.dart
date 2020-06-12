@@ -164,7 +164,7 @@ class ProductsProvider with ChangeNotifier {
   }
 
   // method to delete a product
-  void deleteProduct(String id) async {
+  Future<void> deleteProduct(String id) async {
     final url = 'https://shop-mobile-app-3f890.firebaseio.com/products/$productId.json';
     // get this products index
     final existingProductIndex = _items.indexWhere((product) => product.id == id);
@@ -174,20 +174,18 @@ class ProductsProvider with ChangeNotifier {
     // _items.removeWhere((product) => product.id == id);
     _items.removeAt(existingProductIndex);
     // delete this product from server
-    http.delete(url).then((response) {
+    final response = await http.delete(url);
       // delete requests normally do not throw error for status code greater than 400
       // thus need to provide our own custom error handling
       if (response.statusCode >= 400) {
+      // if error occurs, we need to return the deleted product to the list of products
+      _items.insert(existingProductIndex, existingProduct);
+        notifyListeners();
         throw HttpException('Could not delete this product.');
       }
       // if delete succesful then clear the existing product from memory
       existingProduct = null;
-        notifyListeners();
-    }).catchError((_) {
-      // if error occurs, we need to return the deleted product to the list of products
-      _items.insert(existingProductIndex, existingProduct);
-        notifyListeners();
-    });
+      notifyListeners();
+    }
   
   }
-}
