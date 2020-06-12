@@ -165,7 +165,7 @@ class ProductsProvider with ChangeNotifier {
 
   // method to delete a product
   Future<void> deleteProduct(String id) async {
-    final url = 'https://shop-mobile-app-3f890.firebaseio.com/products/$productId.json';
+    final url = 'https://shop-mobile-app-3f890.firebaseio.com/products/$id.json';
     // get this products index
     final existingProductIndex = _items.indexWhere((product) => product.id == id);
     // store the reference to this product
