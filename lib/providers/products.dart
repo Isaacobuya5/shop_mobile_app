@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import './product.dart';
+import '../model/http_exception.dart';
 
 class ProductsProvider with ChangeNotifier {
 
@@ -177,7 +178,7 @@ class ProductsProvider with ChangeNotifier {
       // delete requests normally do not throw error for status code greater than 400
       // thus need to provide our own custom error handling
       if (response.statusCode >= 400) {
-        
+        throw HttpException('Could not delete this product.');
       }
       // if delete succesful then clear the existing product from memory
       existingProduct = null;
