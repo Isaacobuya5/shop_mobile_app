@@ -20,7 +20,7 @@ class Product with ChangeNotifier{
     this.isFavourite = false
   });
 
-  void toggleFavouriteStatus() async {
+  Future<void> toggleFavouriteStatus() async {
     // store reference to the old isFavourite status
     final oldFavouriteStatus = isFavourite;
     // optimistically update
