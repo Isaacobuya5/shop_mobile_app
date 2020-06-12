@@ -1,4 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class Product with ChangeNotifier{
 
   final String id;
@@ -17,9 +20,26 @@ class Product with ChangeNotifier{
     this.isFavourite = false
   });
 
-  void toggleFavouriteStatus() {
+  void toggleFavouriteStatus() async {
+    // store reference to the old isFavourite status
+    final oldFavouriteStatus = isFavourite;
+    // optimistically update
     isFavourite = !isFavourite;
     // we need to notify any listener for this particular class of the upadate
     notifyListeners();
+    // update on the server
+    final url = 'https://shop-mobile-app-3f890.firebaseio.com/products/$id.json';
+    try {
+    final response = await http.patch(url, body: json.encode({
+      'isFavourite': isFavourite
+    }));
+    if (response.statusCode >= 400) {
+      isFavourite = oldFavouriteStatus;
+      notifyListeners();
+    }
+    } catch (error) {
+      isFavourite = oldFavouriteStatus;
+      notifyListeners();
+    }
   }
 }
